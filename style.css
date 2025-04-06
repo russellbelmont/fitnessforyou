@@ -1,6 +1,71 @@
-/* Add to style.css */
+/* Global Styles */
+:root {
+    --primary: #4361ee;
+    --secondary: #3f37c9;
+    --accent: #4895ef;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --success: #4cc9f0;
+    --warning: #f72585;
+    --border-radius: 8px;
+}
 
-/* Animation for Exercise Media */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Layout */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Exercise Media */
 .exercise-media {
     position: relative;
     height: 200px;
@@ -8,10 +73,9 @@
     border-radius: var(--border-radius) var(--border-radius) 0 0;
     cursor: pointer;
     opacity: 0;
-    animation: fadeIn 0.6s ease forwards; /* Fade-in effect */
+    animation: fadeIn 0.6s ease forwards;
 }
 
-/* Fade-in keyframe animation */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -21,7 +85,6 @@
     }
 }
 
-/* Transition for Exercise Image and Video */
 .exercise-image, .exercise-video {
     position: absolute;
     top: 0;
@@ -29,27 +92,23 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Add transform for a slight zoom effect */
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Zoom effect when hovered */
 .exercise-card:hover .exercise-image {
     transform: scale(1.05);
 }
 
-/* Exercise Video animation */
 .exercise-video {
     opacity: 0;
     z-index: 1;
 }
 
-/* Show video on hover with a fade-in effect */
 .exercise-card:hover .exercise-video {
     opacity: 1;
     animation: slideIn 0.5s ease forwards;
 }
 
-/* Slide-in effect for the video */
 @keyframes slideIn {
     0% {
         transform: translateX(100%);
@@ -59,7 +118,6 @@
     }
 }
 
-/* Play button animation */
 .play-button {
     position: absolute;
     bottom: 10px;
@@ -77,10 +135,9 @@
     cursor: pointer;
     transition: all 0.3s ease, transform 0.3s ease;
     opacity: 0;
-    animation: fadeInButton 0.6s ease 0.3s forwards; /* Fade-in animation for play button */
+    animation: fadeInButton 0.6s ease 0.3s forwards;
 }
 
-/* Fade-in effect for the play button */
 @keyframes fadeInButton {
     0% {
         opacity: 0;
@@ -96,17 +153,16 @@
     transform: scale(1.1);
 }
 
-/* Muscle tags animation */
+/* Muscle Tags */
 .muscle-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 0.5rem;
     opacity: 0;
-    animation: fadeInTags 0.6s ease 0.6s forwards; /* Fade-in for muscle tags */
+    animation: fadeInTags 0.6s ease 0.6s forwards;
 }
 
-/* Fade-in effect for muscle tags */
 @keyframes fadeInTags {
     0% {
         opacity: 0;
@@ -116,7 +172,7 @@
     }
 }
 
-/* Buttons and icons hover animation */
+/* Buttons and Icons */
 .btn-icon {
     background: none;
     border: none;
@@ -130,10 +186,9 @@
     transition: all 0.3s ease;
     transform: translateY(10px);
     opacity: 0;
-    animation: slideUp 0.4s ease forwards; /* Slide-up effect for the button */
+    animation: slideUp 0.4s ease forwards;
 }
 
-/* Slide-up effect */
 @keyframes slideUp {
     0% {
         transform: translateY(10px);
@@ -153,4 +208,102 @@
     width: 20px;
     height: 20px;
     fill: currentColor;
+}
+
+/* Share Modal */
+.share-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0s 0.4s;
+}
+
+.share-modal.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease, visibility 0s;
+}
+
+.share-modal-content {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideIn 0.4s ease forwards;
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.share-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.share-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    background-color: #f8f9fa;
+    text-decoration: none;
+    color: var(--dark);
+    transition: all 0.3s ease, transform 0.2s ease;
+}
+
+.share-option:hover {
+    background-color: var(--accent);
+    color: white;
+    transform: translateY(-5px);
+}
+
+.share-option svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 0.5rem;
+    transition: transform 0.2s ease;
+}
+
+.share-option:hover svg {
+    transform: scale(1.1);
+}
+
+.close-share-modal {
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+    padding: 0.5rem;
+    background-color: var(--primary);
+    color: white;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.close-share-modal:hover {
+    background-color: var(--secondary);
 }
