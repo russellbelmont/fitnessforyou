@@ -1,65 +1,156 @@
-:root {
-    --primary: #4361ee;
-    --secondary: #3f37c9;
-    --accent: #4895ef;
-    --light: #f8f9fa;
-    --dark: #212529;
-    --success: #4cc9f0;
-    --warning: #f72585;
-    --border-radius: 8px;
+/* Add to style.css */
+
+/* Animation for Exercise Media */
+.exercise-media {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards; /* Fade-in effect */
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+/* Fade-in keyframe animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
-body {
-    background-color: #f5f7fa;
-    color: var(--dark);
-    line-height: 1.6;
+/* Transition for Exercise Image and Video */
+.exercise-image, .exercise-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Add transform for a slight zoom effect */
 }
 
-.navbar {
-    background-color: var(--primary);
+/* Zoom effect when hovered */
+.exercise-card:hover .exercise-image {
+    transform: scale(1.05);
+}
+
+/* Exercise Video animation */
+.exercise-video {
+    opacity: 0;
+    z-index: 1;
+}
+
+/* Show video on hover with a fade-in effect */
+.exercise-card:hover .exercise-video {
+    opacity: 1;
+    animation: slideIn 0.5s ease forwards;
+}
+
+/* Slide-in effect for the video */
+@keyframes slideIn {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Play button animation */
+.play-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
     color: white;
-    padding: 1rem 2rem;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    z-index: 2;
+    cursor: pointer;
+    transition: all 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    animation: fadeInButton 0.6s ease 0.3s forwards; /* Fade-in animation for play button */
 }
 
-.container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+/* Fade-in effect for the play button */
+@keyframes fadeInButton {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
-.card {
-    background: white;
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+.play-button:hover {
+    transform: scale(1.1);
 }
 
-.section {
-    margin-bottom: 2rem;
+/* Muscle tags animation */
+.muscle-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    opacity: 0;
+    animation: fadeInTags 0.6s ease 0.6s forwards; /* Fade-in for muscle tags */
 }
 
-.dashboard {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+/* Fade-in effect for muscle tags */
+@keyframes fadeInTags {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
+/* Buttons and icons hover animation */
+.btn-icon {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    transform: translateY(10px);
+    opacity: 0;
+    animation: slideUp 0.4s ease forwards; /* Slide-up effect for the button */
 }
 
-/* Add more styles as needed */
+/* Slide-up effect */
+@keyframes slideUp {
+    0% {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.btn-icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
