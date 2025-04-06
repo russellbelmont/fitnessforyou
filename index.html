@@ -22,6 +22,9 @@
         background-color: #f5f7fa;
         color: #333;
         line-height: 1.6;
+        background-image: url("5.jpeg"); /* Adding the background image */
+        background-size: cover; /* Ensure the image covers the entire screen */
+        background-position: center; /* Center the background image */
       }
 
       /* Navbar styles */
@@ -141,6 +144,46 @@
         border-radius: 8px;
         margin-bottom: 2rem;
       }
+
+      /* Exercise Info */
+      .exercise-list {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .exercise-btn {
+        padding: 1rem;
+        background-color: gray;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .exercise-btn:hover {
+        background-color: #3f37c9;
+      }
+
+      .exercise-info {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+      }
+
+      .exercise-info ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      .exercise-info ul li {
+        margin-bottom: 0.5rem;
+      }
+
+      .exercise-info ul li span {
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
@@ -188,12 +231,24 @@
       <section id="workout-log" class="section" style="display: none">
         <div class="card section-content">
           <h2>Workout Log</h2>
-          <form class="workout-form">
-            <input type="text" placeholder="Workout Name" required />
-            <input type="text" placeholder="Duration (in minutes)" required />
-            <input type="text" placeholder="Calories Burned" required />
-            <button type="submit">Log Workout</button>
-          </form>
+          <div class="exercise-list">
+            <button class="exercise-btn" id="cycling-btn">Cycling</button>
+            <button class="exercise-btn" id="strength-btn">
+              Strength Training
+            </button>
+            <button class="exercise-btn" id="flexibility-btn">
+              Flexibility Exercise
+            </button>
+            <button class="exercise-btn" id="running-btn">Running</button>
+            <button class="exercise-btn" id="walking-btn">Walking</button>
+          </div>
+          <div id="exercise-info" class="exercise-info" style="display: none">
+            <h3>Exercise Benefits</h3>
+            <ul id="exercise-benefits">
+              <!-- Benefits will appear here -->
+            </ul>
+            <p id="calories-burned"></p>
+          </div>
         </div>
       </section>
 
@@ -208,7 +263,7 @@
       </section>
 
       <!-- Exercise Information Section -->
-      <section id="exercise-info" class="section" style="display: none">
+      <section id="exercise-info-section" class="section" style="display: none">
         <div class="card section-content">
           <h2>Exercise Info: Squats</h2>
           <p>
@@ -241,25 +296,14 @@
 
       // Function to show/hide sections based on navbar selection
       const showSection = (sectionId) => {
-        // Hide all sections
-        const sections = document.querySelectorAll(".section");
+        const sections = document.querySelectorAll("section");
         sections.forEach((section) => {
           section.style.display = "none";
         });
-
-        // Show the selected section
-        const selectedSection = document.getElementById(sectionId);
-        if (selectedSection) {
-          selectedSection.style.display = "block";
-        }
+        document.getElementById(sectionId).style.display = "block";
       };
 
-      // Event listeners for navigation
-      document.getElementById("home-btn").addEventListener("click", () => {
-        showSection("home-section");
-        setActiveLink("home-btn");
-      });
-
+      // Event listeners for navigation links
       document
         .getElementById("workout-log-btn")
         .addEventListener("click", () => {
@@ -277,11 +321,11 @@
       document
         .getElementById("exercise-info-btn")
         .addEventListener("click", () => {
-          showSection("exercise-info");
+          showSection("exercise-info-section");
           setActiveLink("exercise-info-btn");
         });
 
-      // Function to set the active link in the navbar
+      // Function to set active link
       const setActiveLink = (activeLinkId) => {
         const links = document.querySelectorAll(".links a");
         links.forEach((link) => {
@@ -290,73 +334,153 @@
         document.getElementById(activeLinkId).classList.add("active");
       };
 
-      // Event listener for login
+      // Handle login
       document.getElementById("login-button").addEventListener("click", () => {
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
-
-        // Check if credentials are valid
         if (username === validUsername && password === validPassword) {
-          // Hide login section and show the main content
-          showSection("home-section");
           document.getElementById("login-section").style.display = "none";
+          document.getElementById("home-section").style.display = "block";
           document.getElementById("login-btn").style.display = "none";
-          setActiveLink("home-btn");
         } else {
-          // Show error message
           document.getElementById("login-error").style.display = "block";
         }
       });
 
-      // Initialize the page with login displayed
-      showSection("login-section");
+      // Exercise Info
+      const exerciseData = {
+        cycling: {
+          benefits: [
+            "Improves cardiovascular health",
+            "Builds muscle strength and endurance",
+            "Boosts mood and reduces stress",
+          ],
+          calories: "Estimated Calories Burned: 400-700 per hour",
+        },
+        strength: {
+          benefits: [
+            "Increases muscle mass",
+            "Boosts metabolism",
+            "Improves bone density",
+          ],
+          calories: "Estimated Calories Burned: 300-600 per hour",
+        },
+        flexibility: {
+          benefits: [
+            "Improves range of motion",
+            "Decreases risk of injury",
+            "Reduces muscle tension",
+          ],
+          calories: "Estimated Calories Burned: 100-200 per hour",
+        },
+        running: {
+          benefits: [
+            "Improves cardiovascular fitness",
+            "Builds endurance",
+            "Boosts mood and mental health",
+          ],
+          calories: "Estimated Calories Burned: 600-900 per hour",
+        },
+        walking: {
+          benefits: [
+            "Improves overall health",
+            "Boosts metabolism",
+            "Increases stamina",
+          ],
+          calories: "Estimated Calories Burned: 200-300 per hour",
+        },
+      };
 
-      // Chart.js - Progress Chart for Workout History
-      const progressChart = document
-        .getElementById("progressChart")
-        .getContext("2d");
-      new Chart(progressChart, {
+      // Event listeners for exercise buttons
+      const updateExerciseInfo = (exercise) => {
+        const benefitsList = document.getElementById("exercise-benefits");
+        benefitsList.innerHTML = "";
+        exerciseData[exercise].benefits.forEach((benefit) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = benefit;
+          benefitsList.appendChild(listItem);
+        });
+        document.getElementById("calories-burned").textContent =
+          exerciseData[exercise].calories;
+        document.getElementById("exercise-info").style.display = "block";
+      };
+
+      document.getElementById("cycling-btn").addEventListener("click", () => {
+        updateExerciseInfo("cycling");
+      });
+
+      document.getElementById("strength-btn").addEventListener("click", () => {
+        updateExerciseInfo("strength");
+      });
+
+      document
+        .getElementById("flexibility-btn")
+        .addEventListener("click", () => {
+          updateExerciseInfo("flexibility");
+        });
+
+      document.getElementById("running-btn").addEventListener("click", () => {
+        updateExerciseInfo("running");
+      });
+
+      document.getElementById("walking-btn").addEventListener("click", () => {
+        updateExerciseInfo("walking");
+      });
+
+      // Create a basic chart for workout history
+      const ctx = document.getElementById("progressChart").getContext("2d");
+      new Chart(ctx, {
         type: "bar",
         data: {
-          labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          labels: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ],
           datasets: [
             {
-              label: "Workout Duration (minutes)",
-              data: [30, 45, 60, 35, 50],
-              backgroundColor: "#4caf50",
-              borderColor: "#388e3c",
+              label: "Workout Hours",
+              data: [2, 3, 1, 2, 4, 1, 2],
+              backgroundColor: "rgba(66, 97, 238, 0.6)",
+              borderColor: "rgba(66, 97, 238, 1)",
               borderWidth: 1,
             },
           ],
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
         },
       });
 
-      // Chart.js - Exercise Progress Chart
-      const exerciseProgressChart = document
+      // Example Exercise Progress Chart
+      const progressCtx = document
         .getElementById("exerciseProgressChart")
         .getContext("2d");
-      new Chart(exerciseProgressChart, {
+      new Chart(progressCtx, {
         type: "line",
         data: {
-          labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"],
+          labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
           datasets: [
             {
-              label: "Squat Progress (Reps)",
-              data: [20, 25, 30, 35, 40],
-              borderColor: "#ff9800",
-              backgroundColor: "rgba(255, 152, 0, 0.2)",
-              fill: true,
-              tension: 0.4,
+              label: "Exercise Progress",
+              data: [2, 4, 5, 6],
+              fill: false,
+              borderColor: "rgba(66, 97, 238, 1)",
+              tension: 0.1,
             },
           ],
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
         },
       });
     </script>
