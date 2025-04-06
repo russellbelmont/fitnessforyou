@@ -4,41 +4,361 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FitForYou - Your Personal Fitness Tracker</title>
-    <link rel="stylesheet" href="css/style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <style>
+      /* Global styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      /* Navbar styles */
+      nav {
+        background-color: #4361ee;
+        color: white;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      nav .logo {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      nav .links {
+        display: flex;
+        gap: 1.5rem;
+      }
+
+      nav .links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 0.5rem;
+        background-color: gray;
+        border-radius: 8px;
+      }
+
+      nav .links a:hover {
+        background-color: #3f37c9;
+      }
+
+      nav .links a.active {
+        background-color: #3f37c9;
+      }
+
+      /* Main content styles */
+      .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      .section {
+        margin-bottom: 2rem;
+      }
+
+      .card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .chart-container {
+        width: 100%;
+        height: 400px;
+      }
+
+      /* Login Form */
+      .login-form {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .login-form input {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+      }
+
+      .login-form button {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 1.1rem;
+        background-color: #4361ee;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .login-form button:hover {
+        background-color: #3f37c9;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 1rem;
+        text-align: center;
+        margin-top: 1rem;
+      }
+
+      /* Footer styles */
+      footer {
+        text-align: center;
+        padding: 2rem;
+        background-color: #4361ee;
+        color: white;
+        margin-top: 3rem;
+      }
+
+      .section-content {
+        padding: 2rem;
+        background-color: #f0f0f0;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+      }
+    </style>
   </head>
   <body>
-    <nav id="navbar" class="navbar"></nav>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo">FitForYou</div>
+      <div class="links">
+        <a href="#" id="home-btn" class="active">HomePage.jsx</a>
+        <a href="#workout-log" id="workout-log-btn">WorkoutLog.jsx</a>
+        <a href="#workout-history" id="workout-history-btn"
+          >WorkoutHistory.jsx</a
+        >
+        <a href="#exercise-info" id="exercise-info-btn">ExerciseInfo.jsx</a>
+        <a href="#login" id="login-btn" style="display: none">Login</a>
+      </div>
+    </nav>
 
-    <main class="container">
-      <section id="workout-form-section" class="section">
-        <div id="workout-form" class="card"></div>
-      </section>
-
-      <section class="dashboard">
-        <!-- Here, add the canvas element for the progress chart -->
-        <div id="progress-chart" class="card chart-container">
-          <canvas id="myChart" width="400" height="400"></canvas>
-          <!-- Canvas element for the chart -->
+    <!-- Main container -->
+    <div class="container">
+      <!-- Login Section -->
+      <section id="login-section" class="section">
+        <div class="login-form">
+          <h2>Login</h2>
+          <input type="text" id="username" placeholder="Username" />
+          <input type="password" id="password" placeholder="Password" />
+          <button id="login-button">Login</button>
+          <div id="login-error" class="error-message" style="display: none">
+            Incorrect username or password!
+          </div>
         </div>
-        <div id="workout-list" class="card"></div>
       </section>
 
-      <div id="exercise-cards-container" class="cards-grid"></div>
-    </main>
+      <!-- Home Page Section -->
+      <section id="home-section" class="section" style="display: none">
+        <div class="card section-content">
+          <h2>Welcome to FitForYou!</h2>
+          <p>
+            Your personal fitness tracker. Track your workouts, view your
+            progress, and get insights into your fitness journey.
+          </p>
+        </div>
+      </section>
 
-    <script src="js/navbar.js"></script>
-    <script src="js/workoutForm.js"></script>
-    <script src="js/workoutList.js"></script>
-    <script src="js/exerciseCard.js"></script>
-    <script src="js/progressChart.js"></script>
-    <script src="js/app.js"></script>
+      <!-- Workout Log Section -->
+      <section id="workout-log" class="section" style="display: none">
+        <div class="card section-content">
+          <h2>Workout Log</h2>
+          <form class="workout-form">
+            <input type="text" placeholder="Workout Name" required />
+            <input type="text" placeholder="Duration (in minutes)" required />
+            <input type="text" placeholder="Calories Burned" required />
+            <button type="submit">Log Workout</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Workout History Section -->
+      <section id="workout-history" class="section" style="display: none">
+        <div class="card section-content">
+          <h2>Your Workout Progress</h2>
+          <div class="chart-container">
+            <canvas id="progressChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Exercise Information Section -->
+      <section id="exercise-info" class="section" style="display: none">
+        <div class="card section-content">
+          <h2>Exercise Info: Squats</h2>
+          <p>
+            Squats are one of the best exercises for strengthening your legs,
+            glutes, and core. Here are some benefits of squats:
+          </p>
+          <ul>
+            <li>Builds lower body strength.</li>
+            <li>Increases flexibility and mobility.</li>
+            <li>Helps to improve posture and balance.</li>
+            <li>Boosts metabolism and burns calories.</li>
+          </ul>
+          <h3>Squat Progress Chart</h3>
+          <div class="chart-container">
+            <canvas id="exerciseProgressChart"></canvas>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>FitForYou - All Rights Reserved &copy; 2025</p>
+    </footer>
+
+    <script>
+      // Simulating hardcoded credentials
+      const validUsername = "user";
+      const validPassword = "password";
+
+      // Function to show/hide sections based on navbar selection
+      const showSection = (sectionId) => {
+        // Hide all sections
+        const sections = document.querySelectorAll(".section");
+        sections.forEach((section) => {
+          section.style.display = "none";
+        });
+
+        // Show the selected section
+        const selectedSection = document.getElementById(sectionId);
+        if (selectedSection) {
+          selectedSection.style.display = "block";
+        }
+      };
+
+      // Event listeners for navigation
+      document.getElementById("home-btn").addEventListener("click", () => {
+        showSection("home-section");
+        setActiveLink("home-btn");
+      });
+
+      document
+        .getElementById("workout-log-btn")
+        .addEventListener("click", () => {
+          showSection("workout-log");
+          setActiveLink("workout-log-btn");
+        });
+
+      document
+        .getElementById("workout-history-btn")
+        .addEventListener("click", () => {
+          showSection("workout-history");
+          setActiveLink("workout-history-btn");
+        });
+
+      document
+        .getElementById("exercise-info-btn")
+        .addEventListener("click", () => {
+          showSection("exercise-info");
+          setActiveLink("exercise-info-btn");
+        });
+
+      // Function to set the active link in the navbar
+      const setActiveLink = (activeLinkId) => {
+        const links = document.querySelectorAll(".links a");
+        links.forEach((link) => {
+          link.classList.remove("active");
+        });
+        document.getElementById(activeLinkId).classList.add("active");
+      };
+
+      // Event listener for login
+      document.getElementById("login-button").addEventListener("click", () => {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        // Check if credentials are valid
+        if (username === validUsername && password === validPassword) {
+          // Hide login section and show the main content
+          showSection("home-section");
+          document.getElementById("login-section").style.display = "none";
+          document.getElementById("login-btn").style.display = "none";
+          setActiveLink("home-btn");
+        } else {
+          // Show error message
+          document.getElementById("login-error").style.display = "block";
+        }
+      });
+
+      // Initialize the page with login displayed
+      showSection("login-section");
+
+      // Chart.js - Progress Chart for Workout History
+      const progressChart = document
+        .getElementById("progressChart")
+        .getContext("2d");
+      new Chart(progressChart, {
+        type: "bar",
+        data: {
+          labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          datasets: [
+            {
+              label: "Workout Duration (minutes)",
+              data: [30, 45, 60, 35, 50],
+              backgroundColor: "#4caf50",
+              borderColor: "#388e3c",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+
+      // Chart.js - Exercise Progress Chart
+      const exerciseProgressChart = document
+        .getElementById("exerciseProgressChart")
+        .getContext("2d");
+      new Chart(exerciseProgressChart, {
+        type: "line",
+        data: {
+          labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"],
+          datasets: [
+            {
+              label: "Squat Progress (Reps)",
+              data: [20, 25, 30, 35, 40],
+              borderColor: "#ff9800",
+              backgroundColor: "rgba(255, 152, 0, 0.2)",
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    </script>
   </body>
 </html>
