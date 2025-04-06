@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitForYou - Your Personal Fitness Tracker</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <nav id="navbar" class="navbar"></nav>
+
+    <main class="container">
+      <section id="workout-form-section" class="section">
+        <div id="workout-form" class="card"></div>
+      </section>
+
+      <section class="dashboard">
+        <div id="progress-chart" class="card chart-container"></div>
+        <div id="workout-list" class="card"></div>
+      </section>
+
+      <div id="exercise-cards-container" class="cards-grid"></div>
+    </main>
+
+    <script src="js/navbar.js"></script>
+    <script src="js/workoutForm.js"></script>
+    <script src="js/workoutList.js"></script>
+    <script src="js/exerciseCard.js"></script>
+    <script src="js/progressChart.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
